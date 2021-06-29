@@ -57,9 +57,9 @@ fi
 
 ping -c1 $test_ip &>/dev/null
 if [ $? -eq 0 ];then
-	echo -e "\e[40;37m $test_ip PPPoE is OK ! \e[0m"
+	echo -e "\e[40;37m ping $test_ip PPPoE is OK ! \e[0m"
 else
-	echo -e "\e[41;37m $test_ip PPPoE is bad ! \e[0m"
+	echo -e "\e[41;37m ping $test_ip PPPoE is bad ! \e[0m"
 fi
 
 ###############

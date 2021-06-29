@@ -6,8 +6,8 @@
 #                                                                  #
 # This script may be freely used, copied, modified and distributed #
 # under the sole condition that credits to the original author     #
-# remain intact.                        		   	   #
-#				   			           #
+# remain intact.                                                   #
+#                                                                  #
 # This script comes without any warranty, use it at your own risk. #
 #                                                                  #
 ####################################################################
@@ -16,13 +16,13 @@
 # CHANGE THESE OPTIONS TO MATCH YOUR SYSTEM ! #
 ###############################################
  
-gateway_ip=172.16.0.1				 # the ip of gateway
+gateway_ip=172.16.0.1                        # the ip of gateway
 
-host1_ip=172.16.0.254         			 # host 1
-host2_ip=172.16.0.5                     	 # host 2
-host3_ip=172.16.0.100                    	 # host 3
-host4_ip=172.16.0.101                     	 # host 4
-host_count=4					 # the sum of host check(eg host 1,host 2,host 3,host 4,the sum of it is 4).
+host1_ip=172.16.0.254                        # host 1
+host2_ip=172.16.0.5                          # host 2
+host3_ip=172.16.0.100                        # host 3
+host4_ip=172.16.0.101                        # host 4
+host_count=4                                 # the sum of host check(eg host 1,host 2,host 3,host 4,the sum of it is 4).
 
 ##################
 # END OF OPTIONS #

@@ -2,7 +2,7 @@
 ####################################################################
 #                                                                  #
 # Basic Network Check Script for linux                             #
-# Created by FanJiaLin, 2021                                       #
+# Created by 252318, 2021                                          #
 #                                                                  #
 # This script may be freely used, copied, modified and distributed #
 # under the sole condition that credits to the original author     #

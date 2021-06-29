@@ -22,7 +22,7 @@ host1_ip=172.16.0.254         			 # host 1
 host2_ip=172.16.0.5                     	 # host 2
 host3_ip=172.16.0.100                    	 # host 3
 host4_ip=172.16.0.101                     	 # host 4
-host_count=4					 # the sum of host check(eg host 1,host 2,host 3,host 4,the sumof it is 4).
+host_count=4					 # the sum of host check(eg host 1,host 2,host 3,host 4,the sum of it is 4).
 
 ##################
 # END OF OPTIONS #

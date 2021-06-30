@@ -18,13 +18,13 @@
 
 ip r &>/dev/null
 if [ $? -eq 0 ];then
-    gateway_ip_preflex1=`ip r` && gateway_ip_preflex2=${gateway_ip_preflex1#*via} && gateway_ip_preflex3=${gateway_ip_preflex2%%dev*} && gateway_ip_preflex=${gateway_ip_preflex3%.*}
+    gateway_ip_prefix1=`ip r` && gateway_ip_prefix2=${gateway_ip_prefix1#*via} && gateway_ip_prefix3=${gateway_ip_prefix2%%dev*} && gateway_ip_prefix=${gateway_ip_prefix3%.*}
 fi
 
 for ((i=1; i<=254; i++))
 do
     {
-        host_ip=$gateway_ip_preflex.${i}
+        host_ip=$gateway_ip_prefix.${i}
         ping -c1 $host_ip &>/dev/null
             if [ $? -eq 0 ];then
                 hostname_tmp1=`nslookup $host_ip` && hostname_tmp2=${hostname_tmp1#*\=\ } && hostname_var=${hostname_tmp2%.*}

@@ -31,21 +31,21 @@ COLOR_BLUE="\033[34m"
 COLOR_YELLOW="\033[33m"
 COLOR_RESET="\033[0m"
 
-STRING_1="LOCAL NETWORK:         "
-STRING_2="GATEWAY:               "
-STRING_3="WAN:                   "
-STRING_4="DNS:                   "
-STRING_5="IPV4 ADDRESS:          "
-STRING_6="IPV6 ADDRESS:          "
+STRING_1="LOCAL NETWORK:       "
+STRING_2="GATEWAY:             "
+STRING_3="WAN:                 "
+STRING_4="DNS:                 "
+STRING_5="IPV4 ADDRESS:        "
+STRING_6="IPV6 ADDRESS:        "
 
-PADDING_X="--------------------------------------------------------------------------------"
-PADDING_Y=""
+PADDING_X="----------------------------------------------------------------------------------"
+
+echo "$PADDING_X"
 
 #################
 # Network check	#
 #################
 
-echo "$PADDING_X"
 ip r &>/dev/null
 if [ $? -eq 0 ];then
     LOCAL_IP_TMP1=`ip r` && LOCAL_IP_TMP2=${LOCAL_IP_TMP1#*src } && LOCAL_IP=${LOCAL_IP_TMP2%% metric*}
@@ -106,7 +106,7 @@ fi
 # Hosts check #
 ###############
 
-echo -e "*********$COLOR_GREEN Hosts Scanning started at: $(date) $COLOR_RESET***********"
+echo -e "***********$COLOR_GREEN Hosts Scanning started at: $(date) $COLOR_RESET***********"
 ip r &>/dev/null
 if [ $? -eq 0 ];then
     GATEWAY_IP_PREFIX1=`ip r` && GATEWAY_IP_PREFIX2=${GATEWAY_IP_PREFIX1#*via} && GATEWAY_IP=${GATEWAY_IP_PREFIX2%%dev*} && GATEWAY_IP_PREFIX=${GATEWAY_IP%.*}
@@ -124,5 +124,7 @@ do
     }&
 done
 wait &>/dev/null
+
 ###############
-echo $PADDING_X
+
+echo "$PADDING_X"

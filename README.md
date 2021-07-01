@@ -1,2 +1,0 @@
-# Fucknetwork
-Linux Shell Script

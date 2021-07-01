@@ -38,7 +38,7 @@ STRING_4="DNS:                   "
 STRING_5="IPV4 ADDRESS:          "
 STRING_6="IPV6 ADDRESS:          "
 
-PADDING_X="-------------------------------------------------------------------------------"
+PADDING_X="--------------------------------------------------------------------------------"
 PADDING_Y=""
 
 #################
@@ -88,7 +88,7 @@ fi
 
 curl -s $VAR_CURL_IPV4 &>/dev/null
 if [ $? -eq 0 ];then
-	echo -e "$STRING_5  `curl -s $VAR_CURL_IPV6` "
+	echo -e "$STRING_5  `curl -s $VAR_CURL_IPV4` "
 else
 	echo -e "$STRING_5 $COLOR_RED BAD $COLOR_RESET"
 fi
@@ -106,7 +106,7 @@ fi
 # Hosts check #
 ###############
 
-echo -e "************$COLOR_GREEN Scanning started at: $(date) $COLOR_RESET*************"
+echo -e "*********$COLOR_GREEN Hosts Scanning started at: $(date) $COLOR_RESET***********"
 ip r &>/dev/null
 if [ $? -eq 0 ];then
     GATEWAY_IP_PREFIX1=`ip r` && GATEWAY_IP_PREFIX2=${GATEWAY_IP_PREFIX1#*via} && GATEWAY_IP=${GATEWAY_IP_PREFIX2%%dev*} && GATEWAY_IP_PREFIX=${GATEWAY_IP%.*}

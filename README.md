@@ -15,5 +15,6 @@ chmod +x fucknetwork.sh
 # Run as a system command
 You can optionally run fucknetwork as a system command:
 ````
+chmod +x fucknetwork.sh
 sudo cp fucknetwork.sh /usr/bin/
 ````

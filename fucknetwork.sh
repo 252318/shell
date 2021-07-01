@@ -31,12 +31,12 @@ COLOR_BLUE="\033[34m"
 COLOR_YELLOW="\033[33m"
 COLOR_RESET="\033[0m"
 
-STRING_1="LOCAL NETWORK:       "
-STRING_2="GATEWAY:             "
-STRING_3="WAN:                 "
-STRING_4="DNS:                 "
-STRING_5="IPV4 ADDRESS:        "
-STRING_6="IPV6 ADDRESS:        "
+STRING_1="LOCAL NETWORK:           "
+STRING_2="GATEWAY:                 "
+STRING_3="WAN:                     "
+STRING_4="DNS:                     "
+STRING_5="IPV4 ADDRESS:            "
+STRING_6="IPV6 ADDRESS:            "
 
 PADDING_X="----------------------------------------------------------------------------------"
 
@@ -119,7 +119,7 @@ do
         ping -c1 $HOST_IP &>/dev/null
             if [ $? -eq 0 ];then
                 HOSTNAME_TMP1=`nslookup $HOST_IP` && HOSTNAME_TMP2=${HOSTNAME_TMP1#*\=\ } && HOSTNAME_VAR=${HOSTNAME_TMP2%.*}
-                echo -e "$COLOR_YELLOW $(date):       $HOST_IP($HOSTNAME_VAR) $COLOR_RESET"
+                echo -e "$COLOR_YELLOW $(date):    $HOST_IP($HOSTNAME_VAR) $COLOR_RESET"
             fi
     }&
 done

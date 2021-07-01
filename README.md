@@ -10,6 +10,7 @@ chmod +x fucknetwork.sh
 ````
 
 # CLI Interface
+![image](https://github.com/FanJialins/fucknetwork/blob/main/fucknetwork.png)
 
 # Run as a system command
 You can optionally run fucknetwork as a system command:

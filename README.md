@@ -1,5 +1,5 @@
 # Fucknetwork
-A shellscript to check network status and scan hosts in LAN.
+A shellscript to check the health status of network and scan hosts in LAN.
 
 # Installation
 ````

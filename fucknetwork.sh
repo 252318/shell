@@ -1,7 +1,7 @@
 #!/bin/bash
 ####################################################################
 #                                                                  #
-# Basic Network Check Script for linux                             #
+# Network Health Check Shellscript for Linux or MacOS.             #
 # Created by FanJialins, 2021                                      #
 #                                                                  #
 # This script may be freely used, copied, modified and distributed #
@@ -15,6 +15,8 @@
 ###############################################
 # CHANGE THESE OPTIONS TO MATCH YOUR SYSTEM ! #
 ###############################################
+
+LANG=en_US.UTF-8
 
 VAR_LOCAL_NETWORK_STATUS=false
 VAR_GATEWAY_STATUS=false
@@ -32,10 +34,11 @@ VAR_CURL_IPV6=ipv6.ip.sb
 # END OF OPTIONS #
 ##################
 
-COLOR_RED="\033[31m"
-COLOR_GREEN="\033[32m"
-COLOR_BLUE="\033[34m"
-COLOR_YELLOW="\033[33m"
+COLOR_RED="\033[1;31m"
+COLOR_GREEN="\033[1;32m"
+COLOR_YELLOW="\033[1;33m"
+COLOR_BLUE="\033[1;34m"
+COLOR_PURPLE="\033[1;35m"
 COLOR_RESET="\033[0m"
 
 STRING_1="LOCAL NETWORK:              "
@@ -49,8 +52,7 @@ STRING_7="LINK SPEED:                 "
 PADDING_X="----------------------------------------------------------------------------------------"
 PADDING_A="                                                                 LAN Ping:"
 PADDING_B="                                                                 WAN Ping:"
-PADDING_Y="**************$COLOR_GREEN Hosts Scanning started at: $(date "+%a %d %b %Y %I:%M:%S %p %Z") $COLOR_RESET**************"
-PADDING_Z="**************$COLOR_GREEN Speed Testing  started at: $(date "+%a %d %b %Y %I:%M:%S %p %Z") $COLOR_RESET**************"
+PADDING_Y="**************$COLOR_YELLOW Hosts Scanning started at: $(date "+%a %d %b %Y %I:%M:%S %p %Z") $COLOR_RESET**************"
 
 echo "$PADDING_X"
 
@@ -84,7 +86,7 @@ fi
 #################
 
 if [[ $VAR_LOCAL_NETWORK_STATUS = true ]]; then
-    echo -e "$STRING_1 $COLOR_GREEN $LOCAL_IP/$NETMASK_VAR VIA GATEWAY $GATEWAY_IP($GATEWAY_NAME_VAR). $COLOR_RESET"
+    echo -e "$STRING_1 $COLOR_YELLOW $LOCAL_IP/$NETMASK_VAR via gateway $GATEWAY_IP($GATEWAY_NAME_VAR). $COLOR_RESET"
 else
     echo -e "$STRING_1 $COLOR_RED BAD $COLOR_RESET"
 fi

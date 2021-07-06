@@ -73,30 +73,40 @@ NETWORK_DATA_STATUS(){
     COLOR_GATEWAY=$COLOR_RED
     COLOR_WAN=$COLOR_RED
     COLOR_DNS=$COLOR_RED
-    
-    ip r &>/dev/null
 
-    # $ curl --remote-name -L https://github.com/brona/iproute2mac/raw/master/src/ip.py
-    # $ chmod +x ip.py
-    # $ mv ip.py /usr/local/bin/ip
-
-    if [ $? -eq 0 ]; then
+    VAR_DATA_COMMAND_IP=$(ip a) && VAR_STATUS_COMMAND_IP=true
+    if [[ $VAR_STATUS_COMMAND_IP = true ]];then
         VAR_STATUS_LOCAL_NETWORK=OK && COLOR_LOCAL_NETWORK=$COLOR_BLUE
-        LOCAL_IP_TMP1=$(ip a) && LOCAL_IP_TMP2=${LOCAL_IP_TMP1##*inet } && LOCAL_IP_MASK=${LOCAL_IP_TMP2%% brd*} && LOCAL_IP=${LOCAL_IP_MASK%/*}
-        NETMASK_VAR=${LOCAL_IP_MASK#*/}
-        GATEWAY_IP_TMP1=$(ip r) && GATEWAY_IP_TMP2=${GATEWAY_IP_TMP1#*via } && GATEWAY_IP=${GATEWAY_IP_TMP2%% dev*}
-        GATEWAY_NAME_TMP1=$(nslookup "$GATEWAY_IP") && GATEWAY_NAME_TMP2=${GATEWAY_NAME_TMP1#*\=\ } && GATEWAY_NAME_VAR=${GATEWAY_NAME_TMP2%.*}
 
-        ping -c1 "$GATEWAY_IP" &>/dev/null && VAR_STATUS_GATEWAY=OK && COLOR_GATEWAY=$COLOR_BLUE
-        ping -c1 $VAR_REMOTE_IP &>/dev/null && VAR_STATUS_WAN=OK && COLOR_WAN=$COLOR_BLUE
+        VAR_IP_LOCAL_TMP1=$VAR_DATA_COMMAND_IP && VAR_IP_LOCAL_TMP2=${VAR_IP_LOCAL_TMP1##*inet } && VAR_IP_LOCAL_MASK=${VAR_IP_LOCAL_TMP2%% brd*} && \
+        VAR_IP_LOCAL=${VAR_IP_LOCAL_MASK%/*}
+        VAR_NETMASK=${VAR_IP_LOCAL_MASK#*/}
+
+        VAR_IP_GATEWAY_TMP1=$(ip r) && VAR_IP_GATEWAY_TMP2=${VAR_IP_GATEWAY_TMP1#*via } && \
+        VAR_IP_GATEWAY=${VAR_IP_GATEWAY_TMP2%% dev*}
+
+        VAR_NAME_GATEWAY_TMP1=$(nslookup "$VAR_IP_GATEWAY") && VAR_NAME_GATEWAY_TMP2=${VAR_NAME_GATEWAY_TMP1#*\=\ } && \
+        VAR_NAME_GATEWAY=${VAR_NAME_GATEWAY_TMP2%.*}
+
+        ping -c1 "$VAR_IP_GATEWAY" &>/dev/null && VAR_STATUS_GATEWAY=OK && COLOR_GATEWAY=$COLOR_BLUE && \
+        ping -c1 $VAR_REMOTE_IP &>/dev/null && VAR_STATUS_WAN=OK && COLOR_WAN=$COLOR_BLUE && \
         nslookup $VAR_REMOTE_DOMAIN &>/dev/null && VAR_STATUS_DNS=OK && VAR_ONOFF_IP_ADDRESS=on && COLOR_DNS=$COLOR_BLUE
+
+    else
+        VAR_NAME_OS=$(uame -s)
+        case "$VAR_NAME_OS" in
+        Darwin)
+            echo "Install Command ip for MacOS."
+            curl --remote-name -L https://github.com/brona/iproute2mac/raw/master/src/ip.py
+            chmod +x ip.py
+            sudo mv ip.py /usr/local/bin/ip
+            ;;
+        esac
     fi
 }
 
-NETWORK_DATA_STATUS
-
 PRINT_NETWORK_DATA_STATUS(){
-    echo -e "$STRING_1 $COLOR_LOCAL_NETWORK $VAR_STATUS_LOCAL_NETWORK $COLOR_YELLOW $LOCAL_IP/$NETMASK_VAR via gateway $GATEWAY_IP($GATEWAY_NAME_VAR). $COLOR_RESET"
+    echo -e "$STRING_1 $COLOR_LOCAL_NETWORK $VAR_STATUS_LOCAL_NETWORK $COLOR_YELLOW $VAR_IP_LOCAL/$VAR_NETMASK via gateway $VAR_IP_GATEWAY($VAR_NAME_GATEWAY). $COLOR_RESET"
     echo -e "$STRING_2 $COLOR_GATEWAY $VAR_STATUS_GATEWAY $COLOR_RESET"
     echo -e "$STRING_3 $COLOR_WAN $VAR_STATUS_WAN $COLOR_RESET"
     echo -e "$STRING_4 $COLOR_DNS $VAR_STATUS_DNS $COLOR_RESET"
@@ -112,8 +122,8 @@ PRINT_IP_DATA_STATUS(){
     COLOR_IPV4=$COLOR_RED
     COLOR_IPV6=$COLOR_RED
     if [[ $VAR_ONOFF_IP_ADDRESS = on ]];then
-        curl -s $VAR_CURL_IPV4 &>/dev/null && VAR_IPV4_ADDRESS=$(curl -s "$VAR_CURL_IPV4") && COLOR_IPV4=$COLOR_WHITE
-        curl -s $VAR_CURL_IPV6 &>/dev/null && VAR_IPV6_ADDRESS=$(curl -s "$VAR_CURL_IPV6") && COLOR_IPV6=$COLOR_WHITE
+        VAR_DATA_IPV4_ADDRESS=$(curl -s "$VAR_CURL_IPV4") && VAR_IPV4_ADDRESS=$VAR_DATA_IPV4_ADDRESS && COLOR_IPV4=$COLOR_WHITE
+        VAR_DATA_IPV6_ADDRESS=$(curl -s "$VAR_CURL_IPV6") && VAR_IPV6_ADDRESS=$VAR_DATA_IPV6_ADDRESS && COLOR_IPV6=$COLOR_WHITE
     fi
     echo -e "$STRING_5 $COLOR_IPV4 $VAR_IPV4_ADDRESS $COLOR_RESET"
     echo -e "$STRING_6 $COLOR_IPV6 $VAR_IPV6_ADDRESS $COLOR_RESET"
@@ -125,11 +135,11 @@ PRINT_IP_DATA_STATUS(){
 ######################
 
 PRINT_HOST_ALIVE(){
-    echo -e "**************$COLOR_YELLOW Hosts Scanning started at: $(date "+%a %d %b %Y %I:%M:%S %p %Z") $COLOR_RESET**************"
-    if [[ $VAR_STATUS_LOCAL_NETWORK = OK ]]; then GATEWAY_IP_PREFIX=${GATEWAY_IP%.*}; fi
+    echo -e "$PADDING_Y"
+    if [[ $VAR_STATUS_LOCAL_NETWORK = OK ]]; then VAR_IP_GATEWAY_PREFIX=${VAR_IP_GATEWAY%.*}; fi
     for ((i = 1; i <= 254; i++)); do
         {
-            HOST_IP=$GATEWAY_IP_PREFIX.$i
+            HOST_IP=$VAR_IP_GATEWAY_PREFIX.$i
             ping -c1 "$HOST_IP" &>/dev/null
             if [ $? -eq 0 ]; then
                 HOSTNAME_TMP1=$(nslookup "$HOST_IP") && HOSTNAME_TMP2=${HOSTNAME_TMP1#*\=\ } && HOSTNAME_VAR=${HOSTNAME_TMP2%.*}
@@ -140,7 +150,7 @@ PRINT_HOST_ALIVE(){
     wait &>/dev/null
 }
 
-###############
+######################
 
 ########################
 # SPEED DATA && STATUS #
@@ -151,7 +161,7 @@ PRINT_SPEED_DATA_STATUS(){
     COLOR_PING_WAN=$COLOR_RED
     echo "$STRING_7"
     if [[ $VAR_STATUS_GATEWAY = OK ]]; then
-        LAN_TIMEOUT1="$(ping -c4 "$GATEWAY_IP")" && LAN_TIMEOUT2=${LAN_TIMEOUT1##*=} && LAN_TIMEOUT3=${LAN_TIMEOUT2#*/} && \
+        LAN_TIMEOUT1="$(ping -c4 "$VAR_IP_GATEWAY")" && LAN_TIMEOUT2=${LAN_TIMEOUT1##*=} && LAN_TIMEOUT3=${LAN_TIMEOUT2#*/} && \
         VAR_TIME_PING_LAN="${LAN_TIMEOUT3%%/*} ms" && COLOR_PING_LAN=$COLOR_WHITE
     fi
 
@@ -172,14 +182,17 @@ PRINT_SPEED_DATA_STATUS(){
 
 PRINT_NETWORK_HEALTH_STATUS(){
     PRINT_PADDING_X
+
+    NETWORK_DATA_STATUS
+
     PRINT_NETWORK_DATA_STATUS
     PRINT_IP_DATA_STATUS
     PRINT_HOST_ALIVE
     PRINT_SPEED_DATA_STATUS
+
     PRINT_PADDING_X
 }
 
 #######################
 
 PRINT_NETWORK_HEALTH_STATUS
-

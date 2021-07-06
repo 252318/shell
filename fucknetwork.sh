@@ -110,9 +110,17 @@ NETWORK_DATA_STATUS(){
     VAR_NAME_GATEWAY_TMP1=$(nslookup "$VAR_IP_GATEWAY") && VAR_NAME_GATEWAY_TMP2=${VAR_NAME_GATEWAY_TMP1#*\=\ } && \
     VAR_NAME_GATEWAY=${VAR_NAME_GATEWAY_TMP2%.*}
 
-    ping -c1 "$VAR_IP_GATEWAY" &>/dev/null && VAR_STATUS_GATEWAY=OK && COLOR_GATEWAY=$COLOR_BLUE && \
-    ping -c1 $VAR_REMOTE_IP &>/dev/null && VAR_STATUS_WAN=OK && COLOR_WAN=$COLOR_BLUE && \
-    nslookup $VAR_REMOTE_DOMAIN &>/dev/null && VAR_STATUS_DNS=OK && VAR_ONOFF_IP_ADDRESS=on && COLOR_DNS=$COLOR_BLUE
+    ping -c1 "$VAR_IP_GATEWAY" &>/dev/null
+    if [[ $? = 0 ]];then
+        VAR_STATUS_GATEWAY=OK && COLOR_GATEWAY=$COLOR_BLUE && \
+        ping -c1 $VAR_REMOTE_IP &>/dev/null && VAR_STATUS_WAN=OK && COLOR_WAN=$COLOR_BLUE && \
+        nslookup $VAR_REMOTE_DOMAIN &>/dev/null && VAR_STATUS_DNS=OK && VAR_ONOFF_IP_ADDRESS=on && COLOR_DNS=$COLOR_BLUE
+    else
+        ping -c1 $VAR_REMOTE_IP &>/dev/null && VAR_STATUS_WAN=OK && COLOR_WAN=$COLOR_BLUE && \
+        VAR_STATUS_GATEWAY=OK && COLOR_GATEWAY=$COLOR_BLUE
+        nslookup $VAR_REMOTE_DOMAIN &>/dev/null && VAR_STATUS_DNS=OK && VAR_ONOFF_IP_ADDRESS=on && COLOR_DNS=$COLOR_BLUE
+    fi
+
 
 }
 

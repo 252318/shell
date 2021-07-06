@@ -68,31 +68,9 @@ PRINT_PADDING_X(){
 # NETWORK DATA && STATUS #
 ##########################
 
-NETWORK_DATA_STATUS(){
-    COLOR_LOCAL_NETWORK=$COLOR_RED
-    COLOR_GATEWAY=$COLOR_RED
-    COLOR_WAN=$COLOR_RED
-    COLOR_DNS=$COLOR_RED
-
+INSTALL_COMMAND_IP(){
     VAR_DATA_COMMAND_IP=$(ip a) && VAR_STATUS_COMMAND_IP=true
-    if [[ $VAR_STATUS_COMMAND_IP = true ]];then
-        VAR_STATUS_LOCAL_NETWORK=OK && COLOR_LOCAL_NETWORK=$COLOR_BLUE
-
-        VAR_IP_LOCAL_TMP1=$VAR_DATA_COMMAND_IP && VAR_IP_LOCAL_TMP2=${VAR_IP_LOCAL_TMP1##*inet } && VAR_IP_LOCAL_MASK=${VAR_IP_LOCAL_TMP2%% brd*} && \
-        VAR_IP_LOCAL=${VAR_IP_LOCAL_MASK%/*}
-        VAR_NETMASK=${VAR_IP_LOCAL_MASK#*/}
-
-        VAR_IP_GATEWAY_TMP1=$(ip r) && VAR_IP_GATEWAY_TMP2=${VAR_IP_GATEWAY_TMP1#*via } && \
-        VAR_IP_GATEWAY=${VAR_IP_GATEWAY_TMP2%% dev*}
-
-        VAR_NAME_GATEWAY_TMP1=$(nslookup "$VAR_IP_GATEWAY") && VAR_NAME_GATEWAY_TMP2=${VAR_NAME_GATEWAY_TMP1#*\=\ } && \
-        VAR_NAME_GATEWAY=${VAR_NAME_GATEWAY_TMP2%.*}
-
-        ping -c1 "$VAR_IP_GATEWAY" &>/dev/null && VAR_STATUS_GATEWAY=OK && COLOR_GATEWAY=$COLOR_BLUE && \
-        ping -c1 $VAR_REMOTE_IP &>/dev/null && VAR_STATUS_WAN=OK && COLOR_WAN=$COLOR_BLUE && \
-        nslookup $VAR_REMOTE_DOMAIN &>/dev/null && VAR_STATUS_DNS=OK && VAR_ONOFF_IP_ADDRESS=on && COLOR_DNS=$COLOR_BLUE
-
-    else
+    if [[ ! $VAR_STATUS_COMMAND_IP = true ]];then
         VAR_NAME_OS=$(uame -s)
         case "$VAR_NAME_OS" in
         Darwin)
@@ -101,8 +79,39 @@ NETWORK_DATA_STATUS(){
             chmod +x ip.py
             sudo mv ip.py /usr/local/bin/ip
             ;;
+        Linux)
+            echo "Please Install Command ip for Your Linux OS."
+            ;;
+        *)
+            echo "The Script Doesn't Support Your OS."
         esac
     fi
+}
+
+INSTALL_COMMAND_IP
+
+NETWORK_DATA_STATUS(){
+    COLOR_LOCAL_NETWORK=$COLOR_RED
+    COLOR_GATEWAY=$COLOR_RED
+    COLOR_WAN=$COLOR_RED
+    COLOR_DNS=$COLOR_RED
+
+    VAR_STATUS_LOCAL_NETWORK=OK && COLOR_LOCAL_NETWORK=$COLOR_BLUE
+
+    VAR_IP_LOCAL_TMP1=$VAR_DATA_COMMAND_IP && VAR_IP_LOCAL_TMP2=${VAR_IP_LOCAL_TMP1##*inet } && VAR_IP_LOCAL_MASK=${VAR_IP_LOCAL_TMP2%% brd*} && \
+    VAR_IP_LOCAL=${VAR_IP_LOCAL_MASK%/*}
+    VAR_NETMASK=${VAR_IP_LOCAL_MASK#*/}
+
+    VAR_IP_GATEWAY_TMP1=$(ip r) && VAR_IP_GATEWAY_TMP2=${VAR_IP_GATEWAY_TMP1#*via } && \
+    VAR_IP_GATEWAY=${VAR_IP_GATEWAY_TMP2%% dev*}
+
+    VAR_NAME_GATEWAY_TMP1=$(nslookup "$VAR_IP_GATEWAY") && VAR_NAME_GATEWAY_TMP2=${VAR_NAME_GATEWAY_TMP1#*\=\ } && \
+    VAR_NAME_GATEWAY=${VAR_NAME_GATEWAY_TMP2%.*}
+
+    ping -c1 "$VAR_IP_GATEWAY" &>/dev/null && VAR_STATUS_GATEWAY=OK && COLOR_GATEWAY=$COLOR_BLUE && \
+    ping -c1 $VAR_REMOTE_IP &>/dev/null && VAR_STATUS_WAN=OK && COLOR_WAN=$COLOR_BLUE && \
+    nslookup $VAR_REMOTE_DOMAIN &>/dev/null && VAR_STATUS_DNS=OK && VAR_ONOFF_IP_ADDRESS=on && COLOR_DNS=$COLOR_BLUE
+
 }
 
 PRINT_NETWORK_DATA_STATUS(){

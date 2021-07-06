@@ -161,7 +161,7 @@ PRINT_HOST_ALIVE(){
             HOST_IP=$VAR_IP_GATEWAY_PREFIX.$i
             ping -c1 "$HOST_IP" &>/dev/null
             if [ $? -eq 0 ]; then
-                HOSTNAME_TMP1=$(nslookup "$HOST_IP") && HOSTNAME_TMP2=${HOSTNAME_TMP1#*\=\ } && HOSTNAME_VAR=${HOSTNAME_TMP2%.*}
+                HOSTNAME_TMP1=$(nslookup "$HOST_IP") && HOSTNAME_TMP2=${HOSTNAME_TMP1##*\=\ } && HOSTNAME_VAR=${HOSTNAME_TMP2%.*}
                 echo -e "$COLOR_YELLOW $(date "+%a %d %b %Y %I:%M:%S %p %Z"):        $HOST_IP($HOSTNAME_VAR) $COLOR_RESET"
             fi
         } &

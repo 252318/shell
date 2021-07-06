@@ -56,7 +56,7 @@ STRING_6="IPV6 ADDRESS:               "
 STRING_7="LINK SPEED:                 "
 
 PADDING_X="----------------------------------------------------------------------------------------"
-PADDING_A="                                                                 LAN Ping:"
+PADDING_A="                                                             GATEWAY Ping:"
 PADDING_B="                                                                 WAN Ping:"
 PADDING_Y="**************$COLOR_YELLOW Hosts Scanning started at: $(date "+%a %d %b %Y %I:%M:%S %p %Z") $COLOR_RESET**************"
 

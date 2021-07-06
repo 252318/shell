@@ -29,8 +29,8 @@ VAR_TIME_PING_LAN=TIMEOUT
 VAR_TIME_PING_WAN=TIMEOUT
 VAR_REMOTE_IP=119.29.29.29
 VAR_REMOTE_DOMAIN=www.qq.com
-VAR_CURL_IPV4=ipv4.ip.sb
-VAR_CURL_IPV6=ipv6.ip.sb
+VAR_CURL_IPV4=https://api-ipv4.ip.sb/ip
+VAR_CURL_IPV6=https://api-ipv6.ip.sb/ip
 
 ##################
 # END OF OPTIONS #

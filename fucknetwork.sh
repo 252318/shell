@@ -71,7 +71,7 @@ PRINT_PADDING_X(){
 INSTALL_COMMAND_IP(){
     VAR_DATA_COMMAND_IP=$(ip a) && VAR_STATUS_COMMAND_IP=true
     if [[ ! $VAR_STATUS_COMMAND_IP = true ]];then
-        VAR_NAME_OS=$(uame -s)
+        VAR_NAME_OS=$(uname -s)
         case "$VAR_NAME_OS" in
         Darwin)
             echo "Install Command ip for MacOS."
@@ -110,8 +110,7 @@ NETWORK_DATA_STATUS(){
     VAR_NAME_GATEWAY_TMP1=$(nslookup "$VAR_IP_GATEWAY") && VAR_NAME_GATEWAY_TMP2=${VAR_NAME_GATEWAY_TMP1#*\=\ } && \
     VAR_NAME_GATEWAY=${VAR_NAME_GATEWAY_TMP2%.*}
 
-    ping -c1 "$VAR_IP_GATEWAY" &>/dev/null
-    if [[ $? = 0 ]];then
+    if ping -c1 "$VAR_IP_GATEWAY" &>/dev/null;then
         VAR_STATUS_GATEWAY=OK && COLOR_GATEWAY=$COLOR_BLUE && \
         ping -c1 $VAR_REMOTE_IP &>/dev/null && VAR_STATUS_WAN=OK && COLOR_WAN=$COLOR_BLUE && \
         nslookup $VAR_REMOTE_DOMAIN &>/dev/null && VAR_STATUS_DNS=OK && VAR_ONOFF_IP_ADDRESS=on && COLOR_DNS=$COLOR_BLUE
@@ -159,8 +158,7 @@ PRINT_HOST_ALIVE(){
     for ((i = 1; i <= 254; i++)); do
         {
             HOST_IP=$VAR_IP_GATEWAY_PREFIX.$i
-            ping -c1 "$HOST_IP" &>/dev/null
-            if [ $? -eq 0 ]; then
+            if ping -c1 "$HOST_IP" &>/dev/null; then
                 HOSTNAME_TMP1=$(nslookup "$HOST_IP") && HOSTNAME_TMP2=${HOSTNAME_TMP1##*\=\ } && HOSTNAME_VAR=${HOSTNAME_TMP2%.*}
                 echo -e "$COLOR_YELLOW $(date "+%a %d %b %Y %I:%M:%S %p %Z"):        $HOST_IP($HOSTNAME_VAR) $COLOR_RESET"
             fi

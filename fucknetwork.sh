@@ -81,9 +81,11 @@ INSTALL_COMMAND_IP(){
             ;;
         Linux)
             echo "Please Install Command ip for Your Linux OS."
+            exit
             ;;
         *)
             echo "The Script Doesn't Support Your OS."
+            exit
         esac
     fi
 }
